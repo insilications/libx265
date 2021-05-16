@@ -68,7 +68,7 @@ unset https_proxy
 unset no_proxy
 export SSL_CERT_FILE=/var/cache/ca-certs/anchors/ca-certificates.crt
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1621152527
+export SOURCE_DATE_EPOCH=1621153949
 mkdir -p clr-build
 pushd clr-build
 export GCC_IGNORE_WERROR=1
@@ -200,7 +200,7 @@ fi
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1621152527
+export SOURCE_DATE_EPOCH=1621153949
 rm -rf %{buildroot}
 ## install_macro start
 pushd 8bit
