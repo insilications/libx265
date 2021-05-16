@@ -1,0 +1,3 @@
+pushd 8bit
+%make_install
+popd

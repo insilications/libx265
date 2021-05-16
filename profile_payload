@@ -1,0 +1,6 @@
+export LD_LIBRARY_PATH=".:$LD_LIBRARY_PATH"
+./x265 --input /opt/fprofile/harry.y4m --crf 20 --output /dev/null
+./x265 --input /opt/fprofile/eyes.y4m --crf 20 --output /dev/null
+./x265 --input /opt/fprofile/allied.y4m --crf 20 --output /dev/null
+./x265 --input /opt/fprofile/harry2.y4m --crf 20 --output /dev/null
+cd ..
