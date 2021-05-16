@@ -11,6 +11,8 @@ Source0  : file:///aot/build/clearlinux/packages/libx265/libx265-v3.5.tar.gz
 Summary  : H.265/HEVC video encoder
 Group    : Development/Tools
 License  : GPL-2.0
+Requires: libx265-bin = %{version}-%{release}
+Requires: libx265-lib = %{version}-%{release}
 BuildRequires : Z3-dev
 BuildRequires : Z3-staticdev
 BuildRequires : binutils-dev
@@ -49,6 +51,7 @@ BuildRequires : zlib-staticdev
 # Suppress stripping binaries
 %define __strip /bin/true
 %define debug_package %{nil}
+Patch1: 0001-static-cli-build.patch
 
 %description
 =================
@@ -58,9 +61,47 @@ x265 HEVC Encoder
 | **Download:** | `releases <http://ftp.videolan.org/pub/videolan/x265/>`_
 | **Interact:** | #x265 on freenode.irc.net | `x265-devel@videolan.org <http://mailman.videolan.org/listinfo/x265-devel>`_ | `Report an issue <https://bitbucket.org/multicoreware/x265/issues?status=new&status=open>`_
 
+%package bin
+Summary: bin components for the libx265 package.
+Group: Binaries
+
+%description bin
+bin components for the libx265 package.
+
+
+%package dev
+Summary: dev components for the libx265 package.
+Group: Development
+Requires: libx265-lib = %{version}-%{release}
+Requires: libx265-bin = %{version}-%{release}
+Provides: libx265-devel = %{version}-%{release}
+Requires: libx265 = %{version}-%{release}
+
+%description dev
+dev components for the libx265 package.
+
+
+%package lib
+Summary: lib components for the libx265 package.
+Group: Libraries
+
+%description lib
+lib components for the libx265 package.
+
+
+%package staticdev
+Summary: staticdev components for the libx265 package.
+Group: Default
+Requires: libx265-dev = %{version}-%{release}
+
+%description staticdev
+staticdev components for the libx265 package.
+
+
 %prep
 %setup -q -n libx265
 cd %{_builddir}/libx265
+%patch1 -p1
 
 %build
 unset http_proxy
@@ -68,7 +109,7 @@ unset https_proxy
 unset no_proxy
 export SSL_CERT_FILE=/var/cache/ca-certs/anchors/ca-certificates.crt
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1621153949
+export SOURCE_DATE_EPOCH=1621154925
 mkdir -p clr-build
 pushd clr-build
 export GCC_IGNORE_WERROR=1
@@ -200,13 +241,35 @@ fi
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1621153949
+export SOURCE_DATE_EPOCH=1621154925
 rm -rf %{buildroot}
 ## install_macro start
-pushd 8bit
+pushd clr-build/8bit
 %make_install
 popd
 ## install_macro end
 
 %files
 %defattr(-,root,root,-)
+
+%files bin
+%defattr(-,root,root,-)
+/usr/bin/x265
+
+%files dev
+%defattr(-,root,root,-)
+/usr/include/hdr10plus.h
+/usr/include/x265.h
+/usr/include/x265_config.h
+/usr/lib64/libhdr10plus.so
+/usr/lib64/libx265.so
+/usr/lib64/pkgconfig/x265.pc
+
+%files lib
+%defattr(-,root,root,-)
+/usr/lib64/libx265.so.200
+
+%files staticdev
+%defattr(-,root,root,-)
+/usr/lib64/libhdr10plus.a
+/usr/lib64/libx265.a
